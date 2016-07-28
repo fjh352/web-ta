@@ -1,0 +1,18 @@
+#!/bin/sh
+cp -r screenshots_bl screenshots
+chmod 755 -R *
+export TA_HOME=`pwd`
+export SLIMERJS=${TA_HOME}/node_modules/slimerjs/bin/slimerjs
+export CASPER_PAH=${TA_HOME}/node_modules/casperjs
+export CASPER_BIN=${CASPER_PAH}/bin
+export CASPERJS=${TA_HOME}/node_modules/casperjs/bin/casperjs
+export SLIMERJS=${TA_HOME}/node_modules/slimerjs/lib/slimer/slimerjs
+export SLIMERJSLAUNCHER=/usr/bin/firefox
+for filename in `ls testcase`
+do 
+    ${CASPER_BIN}/casperjs test testcase/$filename --engine=slimerjs
+done
+for errorfile in `find failures/ |grep fail.png`
+do
+  echo $errorfile >> report/failurefilelist.txt
+done 
